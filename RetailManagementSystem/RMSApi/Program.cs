@@ -7,9 +7,11 @@ using RMSApi.StartupConfig;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.AddStandardServices(); 
+builder.AddStandardServices();
 builder.AddAuthServices();
 builder.AddSwaggerServices();
+builder.AddCustomServices();
+
 
 var app = builder.Build();
 
@@ -17,13 +19,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
-
-    //app.UseSwaggerUI(opts =>
-    //{
-    //    opts.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
-    //    opts.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    //});
+    app.UseSwaggerUI(opts =>
+    {
+        opts.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
+        opts.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    });
 }
 
 app.UseHttpsRedirection();

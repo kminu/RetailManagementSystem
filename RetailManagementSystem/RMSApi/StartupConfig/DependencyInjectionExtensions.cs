@@ -3,17 +3,21 @@ using Microsoft.IdentityModel.Tokens;
 using RMSApi.Constants;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace RMSApi.StartupConfig;
 
 public static class DependencyInjectionExtensions
 {
+    public static void AddCustomServices(this WebApplicationBuilder builder)
+    {
+
+    }
     public static void AddStandardServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
     }
-
     public static void AddAuthServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication("Bearer").AddJwtBearer(opts =>
@@ -43,7 +47,7 @@ public static class DependencyInjectionExtensions
                 policy.RequireClaim("Title", PolicyConstants.Cashier);
             });
 
-            // Anyone who has title can access
+            // Anyone who has title can access API as long as endpoints do not have specific permission
             opts.AddPolicy("Title", policy =>
             {
                 policy.RequireClaim("Title");
@@ -55,7 +59,6 @@ public static class DependencyInjectionExtensions
                 .Build();
         });
     }
-
     public static void AddSwaggerServices(this WebApplicationBuilder builder)
     {
         // Adds Authorize functionality in Swagger
@@ -86,17 +89,17 @@ public static class DependencyInjectionExtensions
         builder.Services.AddSwaggerGen(opts =>
         {
             // Activate authorization in swagger
-            opts.AddSecurityDefinition("Bearer Authentication", securityScheme);
+            opts.AddSecurityDefinition("bearerAuth", securityScheme);
             opts.AddSecurityRequirement(securityRequirement);
 
 
-            // Configure API Version
-            var title = "Our Versioned API";
-            var description = "This is a Web API that demonstrates version.";
+            // Configure API description
+            var title = "RMS API";
+            var description = "Retail management system API";
             var terms = new Uri("https://www.Google.com");
             var license = new OpenApiLicense()
             {
-                Name = "This is my full license information or a link to it."
+                Name = "GitHub MIT License"
             };
             var contact = new OpenApiContact()
             {
@@ -105,6 +108,44 @@ public static class DependencyInjectionExtensions
                 Url = new Uri("https://www.Google.com")
             };
 
+            opts.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = $"{title} v1 (deprecated)",
+                Description = description,
+                TermsOfService = terms,
+                License = license,
+                Contact = contact
+            });
+
+            opts.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Version = "v2",
+                Title = $"{title} v2 ",
+                Description = description,
+                TermsOfService = terms,
+                License = license,
+                Contact = contact
+            });
+
+            // To enable xml comments in swagger, the item below needs to be added in csproj file
+            // <GenerateDocumentationFile>true</GenerateDocumentationFile> in <PropertyGroup>
+            // to get in csproj, double click project
+            var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlfile));
+        });
+
+        // API versioning service
+        builder.Services.AddApiVersioning(opts =>
+        {
+            opts.AssumeDefaultVersionWhenUnspecified = true;
+            opts.DefaultApiVersion = new(2, 0);
+            opts.ReportApiVersions = true;
+        });
+        builder.Services.AddVersionedApiExplorer(opts =>
+        {
+            opts.GroupNameFormat = "'v'VVV";
+            opts.SubstituteApiVersionInUrl = true;
         });
     }
 }

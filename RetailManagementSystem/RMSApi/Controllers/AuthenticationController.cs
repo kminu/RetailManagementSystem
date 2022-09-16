@@ -8,8 +8,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace RMSApi.Controllers;
 
+
 [Route("api/[controller]")]
 [ApiController]
+[AllowAnonymous]
 public class AuthenticationController : ControllerBase
 {
     private readonly IConfiguration _config;
@@ -21,9 +23,15 @@ public class AuthenticationController : ControllerBase
         _config = config;
     }
 
+    /// <summary>
+    /// Get a token
+    /// </summary>
+    /// <remarks>
+    /// This is only exposed method to request and receive token accordingly
+    /// </remarks>
+    /// <returns> A token</returns>
     // Expose the method for user to be authenticated
     [HttpPost("token")]
-    [AllowAnonymous]
     public ActionResult<string> Authenticate([FromBody] AuthenticationData data)
     {
         // TODO: Replace this with Azure AD
@@ -55,7 +63,7 @@ public class AuthenticationController : ControllerBase
         claims.Add(new(JwtRegisteredClaimNames.UniqueName, user.UserName));
         claims.Add(new(JwtRegisteredClaimNames.GivenName, user.FirstName));
         claims.Add(new(JwtRegisteredClaimNames.FamilyName, user.LastName));
-        claims.Add(new("title", user.Title));
+        claims.Add(new("Title", user.Title));
 
         //You can do something like this as well
         //claims.Add(new("title", user.Title));
