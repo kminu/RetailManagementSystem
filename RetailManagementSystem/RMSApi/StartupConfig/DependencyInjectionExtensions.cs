@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using RMS.Library.DataAccess;
+using RMS.Library.Data;
 
 namespace RMSApi.StartupConfig;
 
@@ -13,6 +14,10 @@ public static class DependencyInjectionExtensions
     public static void AddCustomServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IDataAccess, SqlDataAccess>();
+        builder.Services.AddTransient<IInventoryData, InventoryData>();
+        builder.Services.AddTransient<IProductData, ProductData>();
+        builder.Services.AddTransient<ISaleData, SaleData>();
+        builder.Services.AddTransient<IUserData, UserData>();
     }
     public static void AddStandardServices(this WebApplicationBuilder builder)
     {

@@ -11,6 +11,7 @@ builder.AddStandardServices();
 builder.AddAuthServices();
 builder.AddSwaggerServices();
 builder.AddCustomServices();
+builder.AddHealthCheckServices();
 
 var app = builder.Build();
 
