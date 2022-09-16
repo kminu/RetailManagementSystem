@@ -20,7 +20,12 @@
 
 	<ItemGroup>
 		<Folder Include="Constants\" />
+		<Folder Include="Controllers\v2\" />
 		<Folder Include="StartupConfig\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RMS.Library\RMS.Library.csproj" />
 	</ItemGroup>
 
 </Project>

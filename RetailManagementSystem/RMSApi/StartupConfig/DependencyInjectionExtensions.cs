@@ -4,6 +4,7 @@ using RMSApi.Constants;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using RMS.Library.DataAccess;
 
 namespace RMSApi.StartupConfig;
 
@@ -11,7 +12,7 @@ public static class DependencyInjectionExtensions
 {
     public static void AddCustomServices(this WebApplicationBuilder builder)
     {
-
+        builder.Services.AddSingleton<IDataAccess, SqlDataAccess>();
     }
     public static void AddStandardServices(this WebApplicationBuilder builder)
     {
@@ -147,5 +148,10 @@ public static class DependencyInjectionExtensions
             opts.GroupNameFormat = "'v'VVV";
             opts.SubstituteApiVersionInUrl = true;
         });
+    }
+    public static void AddHealthCheckServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddHealthChecks()
+            .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
     }
 }
