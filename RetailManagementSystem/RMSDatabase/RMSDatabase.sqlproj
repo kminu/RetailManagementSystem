@@ -56,5 +56,29 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Stored Procedure" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="dbo\Published Location" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedure\spInventory_GetAll.sql" />
+    <Build Include="dbo\Stored Procedure\spInventory_Insert.sql" />
+    <Build Include="dbo\Stored Procedure\spProduct_GetAll.sql" />
+    <Build Include="dbo\Stored Procedure\spProduct_GetById.sql" />
+    <Build Include="dbo\Stored Procedure\spSale_Insert.sql" />
+    <Build Include="dbo\Stored Procedure\spSale_Lookup.sql" />
+    <Build Include="dbo\Stored Procedure\spSale_SaleReport.sql" />
+    <Build Include="dbo\Stored Procedure\spSaleDetail_Insert.sql" />
+    <Build Include="dbo\Stored Procedure\spUserLookup.sql" />
+    <Build Include="dbo\Tables\Inventory.sql" />
+    <Build Include="dbo\Tables\Product.sql" />
+    <Build Include="dbo\Tables\Sale.sql" />
+    <Build Include="dbo\Tables\SaleDetail.sql" />
+    <Build Include="dbo\Tables\User.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\Published Location\RMSDatabase.publish.xml" />
   </ItemGroup>
 </Project>
