@@ -81,4 +81,7 @@
   <ItemGroup>
     <None Include="dbo\Published Location\RMSDatabase.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="RMSDatabase.refactorlog" />
+  </ItemGroup>
 </Project>

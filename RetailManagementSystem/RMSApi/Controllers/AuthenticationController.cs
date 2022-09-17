@@ -15,7 +15,7 @@ namespace RMSApi.Controllers;
 public class AuthenticationController : ControllerBase
 {
     private readonly IConfiguration _config;
-    public record AuthenticationData(string? UserName, string? Password);
+    public record AuthenticationData(string? EmailAddress, string? Password);
     public record UserData(int Id, string FirstName, string LastName, string UserName, string Title);
 
     public AuthenticationController(IConfiguration config)
@@ -85,16 +85,16 @@ public class AuthenticationController : ControllerBase
     private UserData? ValidateCredentials(AuthenticationData data)
     {
 
-        if (CompareValues(data.UserName, _config.GetValue<string>("TestUser:FirstId")) &&
+        if (CompareValues(data.EmailAddress, _config.GetValue<string>("TestUser:FirstId")) &&
             CompareValues(data.Password, _config.GetValue<string>("TestUser:FirstPw")))
         {
-            return new UserData(1, "John", "Smith", data.UserName!, "Admin");
+            return new UserData(1, "John", "Smith", data.EmailAddress!, "Admin");
         }
 
-        if (CompareValues(data.UserName, _config.GetValue<string>("TestUser:SecondId")) &&
+        if (CompareValues(data.EmailAddress, _config.GetValue<string>("TestUser:SecondId")) &&
             CompareValues(data.Password, _config.GetValue<string>("TestUser:SecondPw")))
         {
-            return new UserData(2, "Alen", "Hopper", data.UserName!, "Cashier");
+            return new UserData(2, "Alen", "Hopper", data.EmailAddress!, "Cashier");
         }
 
         return null;
