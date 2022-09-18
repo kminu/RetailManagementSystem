@@ -13,7 +13,7 @@ namespace RMSApi.Controllers
         [HttpGet]
         public async Task<ActionResult> WelcomeMessage()
         {
-            string message = "this is RMS API";
+            string message = "Welcome to RMS API";
 
             return Ok(message);
         }
